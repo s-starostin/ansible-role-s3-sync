@@ -1,0 +1,15 @@
+---
+s3_sync_aws_region: ru-central1
+s3_sync_aws_access_key_id: secret_id
+s3_sync_aws_secret_access_key: secret_key
+s3_sync_bucket: atlassian
+s3_sync_folder: /temp
+s3_sync_source_location: "/root/tmp"
+s3_sync_endpoint_url: https://storage.yandexcloud.net
+
+s3_sync_cron:
+  minute: '*/10'
+  hour: '*'
+  day: '*'
+  month: '*'
+  weekday: '*'

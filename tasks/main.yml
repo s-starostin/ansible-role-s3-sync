@@ -1,0 +1,36 @@
+- name: get pip
+  dnf:
+    name: python3-pip
+    state: present
+
+- name: get aws cli
+  pip:
+    name: awscli
+
+- name: make aws config dir
+  file:
+    path: "/root/.aws"
+    state: directory
+
+- name: configure aws cli
+  template:
+    src: templates/awsconfig.j2
+    dest: "/root/.aws/config"
+
+- name: make sync dir if not exists
+  file:
+    path: "{{ s3_sync_source_location }}"
+    state: directory
+
+- name: Setup sync cron
+  cron:
+    name: "Sync to S3"
+    minute: "{{ s3_sync_cron.minute }}"
+    hour: "{{ s3_sync_cron.hour }}"
+    day: "{{ s3_sync_cron.day }}"
+    month: "{{ s3_sync_cron.month }}"
+    weekday: "{{ s3_sync_cron.weekday }}"
+    user: "{{ s3_sync_agent_linux_username }}"
+    job: >-
+      /usr/local/bin/aws --endpoint-url={{ s3_sync_endpoint_url }}
+      s3 sync --delete {{ s3_sync_source_location }} s3://{{ s3_sync_bucket }}{{ s3_sync_folder }}
