@@ -32,8 +32,8 @@
 
 - name: create systemd S3 cron timer unit
   template:
-    src: s3_cron.service.j2
-    dest: "/etc/systemd/system/s3_cron.service"
+    src: s3_cron.timer.j2
+    dest: "/etc/systemd/system/s3_cron.timer"
     owner: root
     group: root
     mode: 0644
