@@ -1,0 +1,11 @@
+[Unit]
+Description=Schedule S3 backups
+
+[Timer]
+OnCalendar={{ s3_sync_timer_calendar }}
+RandomizedDelaySec=60
+Unit=s3_sync.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

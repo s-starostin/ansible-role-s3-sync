@@ -1,0 +1,11 @@
+[Unit]
+Description=S3 sync
+Wants=s3_cron.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/aws --endpoint-url={{ s3_sync_endpoint_url }} s3 sync --delete {{ s3_sync_source_location }} \
+    s3://{{ s3_sync_bucket }}{{ s3_sync_folder }}
+
+[Install]
+WantedBy=multi-user.target

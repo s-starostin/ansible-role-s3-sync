@@ -1,0 +1,8 @@
+---
+
+- name: restart s3_cron
+  systemd:
+    daemon_reload: true
+    name: s3_cron.timer
+    enabled: true
+    state: restarted

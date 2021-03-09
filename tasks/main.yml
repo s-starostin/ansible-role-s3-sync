@@ -22,15 +22,20 @@
     path: "{{ s3_sync_source_location }}"
     state: directory
 
-- name: Setup sync cron
-  cron:
-    name: "Sync to S3"
-    minute: "{{ s3_sync_cron.minute }}"
-    hour: "{{ s3_sync_cron.hour }}"
-    day: "{{ s3_sync_cron.day }}"
-    month: "{{ s3_sync_cron.month }}"
-    weekday: "{{ s3_sync_cron.weekday }}"
-    user: "root"
-    job: >-
-      /usr/local/bin/aws --endpoint-url={{ s3_sync_endpoint_url }}
-      s3 sync --delete {{ s3_sync_source_location }} s3://{{ s3_sync_bucket }}{{ s3_sync_folder }}
+- name: create systemd S3 sync service unit
+  template:
+    src: s3_sync.service.j2
+    dest: "/etc/systemd/system/s3_sync.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create systemd S3 cron timer unit
+  template:
+    src: s3_cron.service.j2
+    dest: "/etc/systemd/system/s3_cron.service"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart s3_cron
