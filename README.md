@@ -15,7 +15,7 @@ ansible-role-s3-sync
 | s3_sync_folder | string | /temp | Целевая директория в облаке |
 | s3_sync_source_location | string | /root/tmp | Локальная директория синхронизации |
 | s3_sync_endpoint_url | string | https://storage.yandexcloud.net | URL сервиса AWS |
-| s3_sync_cron | {} | { minute: '*/10', hour: '*', day: '*', month: '*', weekday: '*' } | Период запуска синхронизации |
+| s3_sync_timer_calendar | string | *:0/10 | Период запуска синхронизации |
 
 Пример плэйбука
 --------------
