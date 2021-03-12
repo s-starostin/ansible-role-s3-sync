@@ -22,20 +22,15 @@
     path: "{{ s3_sync_source_location }}"
     state: directory
 
-- name: create systemd S3 sync service unit
+- name: create systemd S3 sync service unit and timer
   template:
-    src: s3_sync.service.j2
-    dest: "/etc/systemd/system/s3_sync.service"
-    owner: root
-    group: root
-    mode: 0644
-
-- name: create systemd S3 cron timer unit
-  template:
-    src: s3_cron.timer.j2
-    dest: "/etc/systemd/system/s3_cron.timer"
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item | splitext | first }}"
     owner: root
     group: root
     mode: 0644
   notify:
-    - restart s3_cron
+    - restart s3_sync
+  loop:
+    - s3_sync.service.j2
+    - s3_sync.timer.j2
